@@ -1,0 +1,25 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+ (function(scope) {
+   scope.noScrollMixin = {
+    attachNoScroll:function(){
+      this.addEventListener("mousewheel"    , this._noScrollMouseWheelHandler, false);
+      this.addEventListener("DOMMouseScroll", this._noScrollMouseWheelHandler, false);
+    },
+    detachNoScroll:function(){
+      this.removeEventListener("mousewheel"    , this._noScrollMouseWheelHandler);
+      this.removeEventListener("DOMMouseScroll", this._noScrollMouseWheelHandler);
+    },
+    //prevents scrolling whole page if using scroll & mouse is within viewer
+    _noScrollMouseWheelHandler:function (event)
+    {
+        event.preventDefault();
+        return false;
+    },
+    
+   }
+ })(Window);
+</script>
+
+

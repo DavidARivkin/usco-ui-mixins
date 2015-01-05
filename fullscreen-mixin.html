@@ -1,0 +1,44 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+ (function(scope) {
+   scope.fullScreenMixin = {
+     initFullScreen:function(){
+       if (this.requestFullscreen) document.addEventListener("fullscreenchange", this.onFullScreenChange.bind(this), false);
+       if (this.mozRequestFullScreen) document.addEventListener("mozfullscreenchange", this.onFullScreenChange.bind(this), false);
+       if (this.msRequestFullScreen) document.addEventListener("msfullscreenchange", this.onFullScreenChange.bind(this), false);
+       if (this.webkitRequestFullScreen) document.addEventListener("webkitfullscreenchange", this.onFullScreenChange.bind(this), false);
+     },
+     onFullScreenChange:function()
+     {
+      console.log("fullscreenchanged");
+      //workaround to reset this.fullScreen to correct value when pressing exit etc in full screen mode
+      this.fullScreen = !(!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement);
+     },
+      fullScreenChanged:function()
+      {
+        if(this.fullScreen)
+        {
+          if(this.requestFullScreen)      this.requestFullScreen();
+          if(this.webkitRequestFullScreen)this.webkitRequestFullScreen();
+          if(this.mozRequestFullScreen)   this.mozRequestFullScreen();
+          if(this.msRequestFullscreen)    this.msRequestFullscreen();
+        }
+        else
+        {
+          if(document.cancelFullScreen) document.cancelFullScreen();
+          if(document.webkitCancelFullScreen) document.webkitCancelFullScreen();
+          if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+          if(document.msCancelFullScreen) document.msCancelFullScreen();
+        }
+      },
+      handleFullScreen:function(e){
+        this.fullScreen = true;
+        return true
+      }
+   }
+ })(Window);
+</script>
+
+

@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+ (function(scope) {
+    scope.dragAndDropMixin = {
+      initDragAndDrop:function(){
+        this.addEventListener("dragover", this.handleDragOver, false);
+        this.addEventListener("drop", this.handleDrop, false);
+      },
+      detachDragAndDrop:function(){
+        this.removeEventListener("dragover", this.handleDragOver);
+        this.removeEventListener("drop"    , this.handleDrop);
+      },
+      handleDragOver:function(e) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+      },
+      handleDrop:function(e)
+      {
+        if (e.preventDefault) {
+          e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        e.dataTransfer.dropEffect = 'copy'; 
+        console.log("e",e,e.dataTransfer)
+      
+        var data = e.dataTransfer.getData("url");
+        if( data!= "")
+        {
+          this.asyncFire('url-dropped', {data:data} );
+          return;
+        }
+        
+        var data=e.dataTransfer.getData("Text");
+        if( data!= "" ){
+            this.asyncFire('text-dropped', {data:data} );
+            return;
+        }
+
+        var files = e.dataTransfer.files;
+        if(files)
+        {
+          this.asyncFire('files-dropped', {data:files});
+          return;
+        }
+      }
+    },
+ })(Window);
+</script>
+
+
