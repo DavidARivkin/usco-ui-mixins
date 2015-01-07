@@ -1,0 +1,38 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  //TODO: perhaps migrated this elsewhere, could be used server side as well ?
+ (function(scope) {
+    scope.urlParamsMixin = {
+      parseUrlParams:function(){
+        //see http://stackoverflow.com/questions/1034621/get-current-url-in-web-browser
+        var match,
+            pl     = /\+/g,  // Regex for replacing addition symbol with a space
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+            query  = window.location.search.substring(1);
+
+        urlParams = {};
+        while (match = search.exec(query))
+        {
+           var key = decode(match[1]);
+           var value = decode(match[2]);
+           if( key in urlParams){
+            urlParams[key] = [urlParams[key]].concat([value]);
+           }else
+           {
+            urlParams[key] = [value]
+           }
+        }
+        
+        this.fire('urlparams-found', {params:urlParams} );
+        return urlParams;
+      },
+    }
+ })(Window);
+</script>
+
+
+
+
+
